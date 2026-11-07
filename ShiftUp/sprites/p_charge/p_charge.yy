@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
   "%Name":"p_charge",
-  "bboxMode":0,
-  "bbox_bottom":30,
+  "bboxMode":2,
+  "bbox_bottom":31,
   "bbox_left":2,
-  "bbox_right":28,
+  "bbox_right":29,
   "bbox_top":1,
   "collisionKind":1,
   "collisionTolerance":0,

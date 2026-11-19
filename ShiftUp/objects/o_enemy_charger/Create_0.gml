@@ -1,9 +1,11 @@
 // Inherit the parent event
 event_inherited();
-
+// self sprite storage
+destroyed_sprite = e_destroyed_big_s;
+self_sprite = e_charger_s;
 // awareness rect
 
-x_r = 96;
+x_r = 160;
 y_r = 32;
 state = e_state.passive;
 twitch_timer = 120;
@@ -17,16 +19,13 @@ pace_tween = 0;
 mov_right = true;
 alarm[1] = twitch_timer;
 function passive_movement() {
-	if (player.x > (x - x_r) && player.x < (x + x_r) && player.y > (y - y_r) && player.y < (y + 32)) {
+	if (check_player_sensor()) {
+		flash_alpha = 0.5;
 		state = e_state.alert;
 	}
-	if (mov_right) {
-		pace_tween += 0.1;
-	}
-	else {
-		pace_tween -= 0.1;
-	}
-	velo_x = pace_tween;
+	pace_tween += 0.5;
+	//velo_x = velo_x + sin(pace_tween*0.1) * 10;
+	velo_x = sin(pace_tween*0.1) * 10
 	if (velo_x != 0) {
 		velo_x = velo_x * e_friction;
 	}
@@ -50,13 +49,28 @@ function alert_movement() {
 	if (velo_x != 0) {
 		velo_x = velo_x * (alarm[1]/500);
 	}
-	
+	if (velo_x != 0) {
+	velo_x = lerp(velo_x, 0, 0.3);
+}
 }
 
 function possession_movement() {
 	var right = keyboard_check(vk_right);
 	var left = keyboard_check(vk_left);
-	acel_x = clamp(((max_speed - abs(velo_x)) / 3), 0, max_speed);
+	acel_x = (max_speed - abs(velo_x)) / 3;
 	var movement_dir = right - left;
 	velo_x += acel_x * movement_dir;
+	if (movement_dir == 0 && !special) {
+		velo_x = lerp(velo_x, 0, 0.1);
+	}
+}
+
+function special_function() {
+	var abilchargespeed = 15;
+	acel_x = clamp(((abilchargespeed - abs(velo_x)) / 15),0,abilchargespeed);
+	velo_x += acel_x * -image_xscale;
+	if (flash_alpha = 0) {
+		flash_alpha =1;
+	}
+	
 }

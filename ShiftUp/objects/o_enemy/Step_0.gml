@@ -1,5 +1,5 @@
 // handles behavior
-
+special = keyboard_check(ord("E"));
 switch(state) {
 	case e_state.passive:
 	passive_movement();
@@ -12,18 +12,21 @@ switch(state) {
 	break
 	
 	case e_state.possessed:
+		if (special) {
+		special_function();
+		}
 	possession_movement();
 	
 	break
 	
+	case e_state.destroyed:
+	velo_x = lerp(velo_x, 0, 0.1);
+	velo_y = lerp(velo_y, 0, 0.1);
 }
-
 
 
 var grounded = place_meeting(x,y+1,tilemap);
-if (velo_x != 0) {
-	velo_x = lerp(velo_x, 0, 0.3);
-}
+
 if (!grounded) {
 	velo_y += e_grav;
 }
@@ -41,3 +44,4 @@ if (!place_meeting(x + velo_x, y, tilemap)) {
 else {
 	velo_x -= velo_x;
 }
+

@@ -3,12 +3,13 @@ var left;
 right = keyboard_check(vk_right);
 left = keyboard_check(vk_left);
 var space = keyboard_check(vk_space);
+crouch = keyboard_check(vk_down);
 kick = keyboard_check_pressed(ord("Q"));
 shoot = keyboard_check(ord("E"));
 charge = keyboard_check(vk_shift);
 movement_dir = right - left;
 
-var is_grounded = place_meeting(x,y+1,tilemap);
+var is_grounded = place_meeting(x,y+1,[tilemap, o_tunnelspace]);
 switch(state) {
 	case p_state.grounded:
 	has_kicked = false;
@@ -78,22 +79,27 @@ switch(state) {
 	break;
 
 }
-if (!place_meeting(x, y+(velo_y), tilemap)) {
+if (!place_meeting(x, y+(velo_y), [tilemap, o_tunnelspace])) {
 	y =round(y+ velo_y);
 }
 else {
 	velo_y =0;
 }
 // collision checker
-if (!place_meeting(x + velo_x, y, tilemap)) {
+if (!place_meeting(x + velo_x, y, [tilemap, o_tunnelspace])) {
 	x += velo_x;
 }
 else {
 	velo_x -= velo_x;
 }
 
-if (shoot && !shoot_recharge && state != p_state.possession) {
+if (shoot && !shoot_recharge && state != p_state.possession && !crouch) {
 	alarm[2] = shoot_timer;
 	shoot_recharge = true;
 	instance_create_layer(x +(10 * image_xscale),y - 8,"Instances",o_p_shot);
+}
+else if (shoot && !shoot_recharge && state != p_state.possession && crouch) {
+	alarm[2] = shoot_timer;
+	shoot_recharge = true;
+	instance_create_layer(x +(10 * image_xscale),y,"Instances",o_p_shot);
 }

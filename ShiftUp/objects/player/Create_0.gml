@@ -1,7 +1,7 @@
 // collision tester
  tilemap = layer_tilemap_get_id("place");
  
- 
+
 // movement premise
 velo_x = 0;
 velo_y = 0;
@@ -19,7 +19,7 @@ kick_grounded_refreshed = true;
 has_kicked = false;
 kick_speed = 12;
 kick = false;
-
+crouch = false;
 
 shoot = false;
 shoot_recharge = false;

@@ -12,6 +12,9 @@ switch(state) {
 	
 	case p_state.airborne:
 	if (velo_y > 0) {
+		if (sprite_index != p_jump) {
+			sprite_index = p_jump;
+		}
 	image_index = 1;
 	}
 	else if (velo_y < 0) {
@@ -47,3 +50,9 @@ if (charge) {
 	sprite_index = p_charge;
 }
 
+if (crouch && movement_dir ==0) {
+	if (!shoot) {
+		image_index = 0;
+	}
+	sprite_index = p_crouch_gun;
+}
